@@ -1,0 +1,20 @@
+version: "3"
+services:
+  db:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    container_name: devdb
+  sites:
+    build:
+      context: .
+    ports:
+      - "80:80"
+    links:
+      - db:mysql
+    volumes:
+      - ./sites:/var/www/html
+      - ./scripts:/scripts
+    container_name: devweb
