@@ -26,6 +26,14 @@ find ${site_directory}/* -prune -type d | while IFS= read -r d; do
     sed -ri -e "s/error.log/${dir}.error.log/" ${new_config}
     sed -ri -e "s/access.log/${dir}.access.log/" ${new_config}
 
+    # add environment variables
+    if [ -n "${environment_key}" ]
+    then
+        if [ -n "${environment_value}" ]
+        then
+            echo "SetEnv ${environment_key} ${environment_value}" >> ${new_config}
+        fi
+    fi
     # add overrides and setup php-fpm
     sed -i "s/<\/VirtualHost>//" ${new_config}
     echo "<Directory ${d}${entry}/>
